@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Connected Hearts Dashboard ❤️</title>
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #0d1117;
+        color: #fff;
+        margin: 0;
+        padding: 0;
+    }
+    header {
+        background-color: #161b22;
+        padding: 15px;
+        text-align: center;
+        font-size: 1.5em;
+        color: #ff4d6d;
+        border-bottom: 2px solid #ff4d6d;
+    }
+    .container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 15px;
+        padding: 20px;
+    }
+    .card {
+        background-color: #161b22;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(255, 77, 109, 0.5);
+    }
+    h2 {
+        margin-top: 0;
+        color: #ff4d6d;
+    }
+    .signal-bar {
+        background: #333;
+        border-radius: 8px;
+        overflow: hidden;
+        height: 20px;
+        margin-top: 10px;
+    }
+    .signal-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #ff4d6d, #ff99ac);
+        width: 100%;
+        animation: pulse 1.5s infinite;
+    }
+    @keyframes pulse {
+        0% { opacity: 0.7; }
+        50% { opacity: 1; }
+        100% { opacity: 0.7; }
+    }
+    .sensor {
+        font-size: 1.1em;
+        margin: 5px 0;
+    }
+    #messages {
+        background: #0d1117;
+        padding: 10px;
+        height: 200px;
+        overflow-y: auto;
+        border: 1px solid #ff4d6d;
+        font-family: monospace;
+        white-space: pre-wrap;
+    }
+    button {
+        background: #ff4d6d;
+        border: none;
+        padding: 10px 15px;
+        border-radius: 5px;
+        color: white;
+        cursor: pointer;
+        font-size: 1em;
+    }
+    button:hover {
+        background: #ff99ac;
+    }
+    .hearts {
+        position: fixed;
+        top: -50px;
+        font-size: 2em;
+        animation: floatHearts 5s linear infinite;
+    }
+    @keyframes floatHearts {
+        0% { transform: translateY(0) rotate(0); opacity: 1; }
+        100% { transform: translateY(-600px) rotate(360deg); opacity: 0; }
+    }
+</style>
+</head>
+<body>
+
+<header>💖 Connected Hearts Dashboard 💖</header>
+
+<div class="container">
+
+    <!-- Heart Signal -->
+    <div class="card">
+        <h2>Heart Signal Strength</h2>
+        <div class="signal-bar">
+            <div class="signal-fill"></div>
+        </div>
+        <p>Status: Connected ✅</p>
+    </div>
+
+    <!-- Location -->
+    <div class="card">
+        <h2>Location of My Heart</h2>
+        <p>📍 Currently with You ❤️</p>
+    </div>
+
+    <!-- Love Sensors -->
+    <div class="card">
+        <h2>Love Sensors</h2>
+        <p class="sensor">💓 Happiness Sensor: 99%</p>
+        <p class="sensor">🔥 Love Intensity: Overflow Error</p>
+        <p class="sensor">💭 Missing You: Critical High</p>
+    </div>
+
+    <!-- Message Terminal -->
+    <div class="card">
+        <h2>Message Terminal</h2>
+        <div id="messages">Loading messages...</div>
+    </div>
+
+    <!-- Surprise Button -->
+    <div class="card">
+        <h2>Special Event</h2>
+        <button onclick="triggerHearts()">Trigger Surprise</button>
+    </div>
+
+</div>
+
+<script>
+const messagesContainer = document.getElementById("messages");
+
+// Replace with your GitHub Gist RAW URL
+const messagesURL = "https://gist.githubusercontent.com/anamika-webdev/ebe96d7188d523a9f5808cfd00b3254e/raw/5c23127232b402265590d4dc636ff82a5bb70638/messages.json";
+
+function fetchMessages() {
+    fetch(messagesURL + '?t=' + new Date().getTime())
+        .then(response => response.json())
+        .then(data => {
+            messagesContainer.innerHTML = "";
+            data.forEach(msg => {
+                messagesContainer.innerHTML += `[${msg.time}] ${msg.text}\n`;
+            });
+        })
+        .catch(err => {
+            messagesContainer.innerHTML = "Error loading messages.";
+        });
+}
+
+function triggerHearts() {
+    for (let i = 0; i < 20; i++) {
+        let heart = document.createElement("div");
+        heart.className = "hearts";
+        heart.style.left = Math.random() * 100 + "vw";
+        heart.style.animationDuration = (Math.random() * 2 + 3) + "s";
+        heart.innerHTML = "❤️";
+        document.body.appendChild(heart);
+        setTimeout(() => heart.remove(), 5000);
+    }
+}
+
+// Fetch messages on load
+fetchMessages();
+</script>
+
+</body>
+</html>
